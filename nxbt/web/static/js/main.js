@@ -503,14 +503,55 @@ function updateLoader() {
     }
 }
 
+/** @type {Set<string>} */
+let invertedStick = new Set();
+/** @type {Map<string, number>} */
+let invertingTasks = new Map();
+let sticks = ["LX", "LY", "RX", "RY"];
+
+function invertStick(stick) {
+    stick = stick.toUpperCase();
+    if (!invertedStick.delete(stick)) {
+        invertedStick.add(stick);
+    }
+}
+
+function resetStick(stick) {
+    invertedStick.delete(stick.toUpperCase());
+}
+
+/**
+ * @param {string} stick
+ * @param {number} value
+ */
+function onStickSliderInput(stick, value) {
+    let label = document.getElementById(stick + "-label");
+    label.innerHTML = value + "s";
+
+    stick = stick.toUpperCase();
+    resetStick(stick);
+    if (invertingTasks.has(stick)) {
+        clearInterval(invertingTasks.get(stick));
+        invertingTasks.delete(stick);
+    }
+    if (value <= 0) {
+        return;
+    }
+    invertingTasks.set(stick, setInterval(function() {
+        invertStick(stick);
+    }, value * 1000));
+}
+
+// TODO: reset/resync button?
+
 function updateGamepadInput() {
     let gp = navigator.getGamepads()[CONTROLLER_INDEX];
-    INPUT_PACKET["L_STICK"]["X_VALUE"] = gp.axes[0] * 100;
-    INPUT_PACKET["L_STICK"]["Y_VALUE"] = gp.axes[1] * -100;
+    INPUT_PACKET["L_STICK"]["X_VALUE"] = gp.axes[0] * 100 * (invertedStick.has("LX") ? -1 : 1);
+    INPUT_PACKET["L_STICK"]["Y_VALUE"] = gp.axes[1] * -100 * (invertedStick.has("LY") ? -1 : 1);
     INPUT_PACKET["L_STICK"]["PRESSED"] = gp["buttons"][10]["pressed"];
 
-    INPUT_PACKET["R_STICK"]["X_VALUE"] = gp.axes[2] * 100;
-    INPUT_PACKET["R_STICK"]["Y_VALUE"] = gp.axes[3] * -100;
+    INPUT_PACKET["R_STICK"]["X_VALUE"] = gp.axes[2] * 100 * (invertedStick.has("RX") ? -1 : 1);
+    INPUT_PACKET["R_STICK"]["Y_VALUE"] = gp.axes[3] * -100 * (invertedStick.has("RY") ? -1 : 1);
     INPUT_PACKET["R_STICK"]["PRESSED"] = gp["buttons"][11]["pressed"];
 
     INPUT_PACKET["DPAD_UP"] = gp["buttons"][12]["pressed"];
