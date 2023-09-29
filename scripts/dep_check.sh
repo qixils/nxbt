@@ -5,4 +5,4 @@ NC='\033[0m' # No Color
 
 printf "\n${RED}Installing System Requirements and Bluetooth Requirements...${NC}\n\n"
 # Bluetooth + Sys Reqs
-sudo apt install libbluetooth-dev bluez bluez-tools bluez-firmware libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 -y
+sudo apt install python3-pip libbluetooth-dev bluez bluez-tools bluez-firmware libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 libdbus-1-dev

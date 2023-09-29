@@ -511,13 +511,16 @@ let sticks = ["LX", "LY", "RX", "RY"];
 
 function invertStick(stick) {
     stick = stick.toUpperCase();
+    console.log("Inverting stick:", stick);
     if (!invertedStick.delete(stick)) {
         invertedStick.add(stick);
     }
 }
 
 function resetStick(stick) {
-    invertedStick.delete(stick.toUpperCase());
+    stick = stick.toUpperCase();
+    console.log("Resetting stick:", stick);
+    invertedStick.delete(stick);
 }
 
 /**
