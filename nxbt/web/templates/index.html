@@ -136,22 +136,31 @@
                     <h2 class="surface-lighter">Control Modifications</h2>
                     <p>
                         <label for="LX-input">Left X (<span id="LX-label">0s</span>)</label>
-                        <input type="range" id="LX-input" name="Left X" list="timevalues" min="0" max="60" step="1" value="0" oninput="onStickSliderInput('LX', this.value)" onchange="onStickSliderInput('LX', this.value)" />
+                        <input type="range" id="LX-input" name="Left X" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('LX', this.value)" onchange="onStickSliderInput('LX', this.value)" />
                     </p>
                     <p>
                         <label for="LY-input">Left Y (<span id="LY-label">0s</span>)</label>
-                        <input type="range" id="LY-input" name="Left Y" list="timevalues" min="0" max="60" step="1" value="0" oninput="onStickSliderInput('LY', this.value)" onchange="onStickSliderInput('LY', this.value)" />
+                        <input type="range" id="LY-input" name="Left Y" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('LY', this.value)" onchange="onStickSliderInput('LY', this.value)" />
                     </p>
                     <p>
                         <label for="RX-input">Right X (<span id="RX-label">0s</span>)</label>
-                        <input type="range" id="RX-input" name="Right X" list="timevalues" min="0" max="60" step="1" value="0" oninput="onStickSliderInput('RX', this.value)" onchange="onStickSliderInput('RX', this.value)" />
+                        <input type="range" id="RX-input" name="Right X" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('RX', this.value)" onchange="onStickSliderInput('RX', this.value)" />
                     </p>
                     <p>
                         <label for="RY-input">Right Y (<span id="RY-label">0s</span>)</label>
-                        <input type="range" id="RY-input" name="Right Y" list="timevalues" min="0" max="60" step="1" value="0" oninput="onStickSliderInput('RY', this.value)" onchange="onStickSliderInput('RY', this.value)" />
+                        <input type="range" id="RY-input" name="Right Y" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('RY', this.value)" onchange="onStickSliderInput('RY', this.value)" />
+                    </p>
+                    <p>
+                        <label for="DX-input">Dpad X (<span id="DX-label">0s</span>)</label>
+                        <input type="range" id="DX-input" name="Dpad X" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('DX', this.value)" onchange="onStickSliderInput('DX', this.value)" />
+                    </p>
+                    <p>
+                        <label for="DY-input">Dpad Y (<span id="DY-label">0s</span>)</label>
+                        <input type="range" id="DY-input" name="Dpad Y" list="timevalues" min="-1" max="60" step="1" value="0" oninput="onStickSliderInput('DY', this.value)" onchange="onStickSliderInput('DY', this.value)" />
                     </p>
 
                     <datalist id="timevalues">
+                        <option value="-1" label="-1"></option>
                         <option value="0" label="0"></option>
                         <option value="5" label="5"></option>
                         <option value="10" label="10"></option>
@@ -166,6 +175,25 @@
                         <option value="55" label="55"></option>
                         <option value="60" label="60"></option>
                     </datalist>
+
+                    <h3>Invert On...</h3>
+
+                    <p>
+                        <label for="A-input-trigger">A</label>
+                        <input type="checkbox" id="A-input-trigger" name="A" />
+                    </p>
+                    <p>
+                        <label for="B-input-trigger">B</label>
+                        <input type="checkbox" id="B-input-trigger" name="B" />
+                    </p>
+                    <p>
+                        <label for="X-input-trigger">X</label>
+                        <input type="checkbox" id="X-input-trigger" name="X" />
+                    </p>
+                    <p>
+                        <label for="Y-input-trigger">Y</label>
+                        <input type="checkbox" id="Y-input-trigger" name="Y" />
+                    </p>
 
                     <h2 class="surface-lighter">Control Mapping</h2>
                     <div id="keyboard-map" class="surface-lighter">

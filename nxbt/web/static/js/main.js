@@ -507,7 +507,8 @@ function updateLoader() {
 let invertedStick = new Set();
 /** @type {Map<string, number>} */
 let invertingTasks = new Map();
-let sticks = ["LX", "LY", "RX", "RY"];
+let sticks = ["LX", "LY", "RX", "RY", "DX", "DY"];
+let buttons = ["A", "B", "X", "Y"];
 
 function invertStick(stick) {
     stick = stick.toUpperCase();
@@ -549,6 +550,25 @@ function onStickSliderInput(stick, value) {
 
 function updateGamepadInput() {
     let gp = navigator.getGamepads()[CONTROLLER_INDEX];
+
+    INPUT_PACKET["B"] = gp["buttons"][0]["pressed"];
+    INPUT_PACKET["A"] = gp["buttons"][1]["pressed"];
+    INPUT_PACKET["Y"] = gp["buttons"][2]["pressed"];
+    INPUT_PACKET["X"] = gp["buttons"][3]["pressed"];
+
+    for (let button in buttons) {
+        if (INPUT_PACKET[button] && INPUT_PACKET[button] !== INPUT_PACKET_OLD[button] && document.getElementById(`${button}-input-trigger`).checked) {
+            for (let stick in sticks) {
+                if (document.getElementById(`${stick}-input`).value === -1) {
+                    if (!invertedStick.delete(stick)) {
+                        invertedStick.add(stick);
+                    }
+                }
+            }
+            // TODO: OBS websocket
+        }
+    }
+
     INPUT_PACKET["L_STICK"]["X_VALUE"] = gp.axes[0] * 100 * (invertedStick.has("LX") ? -1 : 1);
     INPUT_PACKET["L_STICK"]["Y_VALUE"] = gp.axes[1] * -100 * (invertedStick.has("LY") ? -1 : 1);
     INPUT_PACKET["L_STICK"]["PRESSED"] = gp["buttons"][10]["pressed"];
@@ -557,10 +577,10 @@ function updateGamepadInput() {
     INPUT_PACKET["R_STICK"]["Y_VALUE"] = gp.axes[3] * -100 * (invertedStick.has("RY") ? -1 : 1);
     INPUT_PACKET["R_STICK"]["PRESSED"] = gp["buttons"][11]["pressed"];
 
-    INPUT_PACKET["DPAD_UP"] = gp["buttons"][12]["pressed"];
-    INPUT_PACKET["DPAD_DOWN"] = gp["buttons"][13]["pressed"];
-    INPUT_PACKET["DPAD_LEFT"] = gp["buttons"][14]["pressed"];
-    INPUT_PACKET["DPAD_RIGHT"] = gp["buttons"][15]["pressed"];
+    INPUT_PACKET["DPAD_UP"] = gp["buttons"][invertedStick.has("DY") ? 13 : 12]["pressed"];
+    INPUT_PACKET["DPAD_DOWN"] = gp["buttons"][invertedStick.has("DY") ? 12 : 13]["pressed"];
+    INPUT_PACKET["DPAD_LEFT"] = gp["buttons"][invertedStick.has("DX") ? 15 : 14]["pressed"];
+    INPUT_PACKET["DPAD_RIGHT"] = gp["buttons"][invertedStick.has("DX") ? 14 : 15]["pressed"];
 
     if (gp["buttons"][16]) {
         INPUT_PACKET["HOME"] = gp["buttons"][16]["pressed"];
@@ -569,11 +589,6 @@ function updateGamepadInput() {
     if (gp["buttons"][17]) {
         INPUT_PACKET["CAPTURE"] = gp["buttons"][17]["pressed"];
     }
-
-    INPUT_PACKET["B"] = gp["buttons"][0]["pressed"];
-    INPUT_PACKET["A"] = gp["buttons"][1]["pressed"];
-    INPUT_PACKET["Y"] = gp["buttons"][2]["pressed"];
-    INPUT_PACKET["X"] = gp["buttons"][3]["pressed"];
 
     INPUT_PACKET["L"] = gp["buttons"][4]["pressed"];
     INPUT_PACKET["R"] = gp["buttons"][5]["pressed"];
