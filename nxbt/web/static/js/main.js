@@ -2,7 +2,8 @@
 /* Globals, Constants, and Enums */
 /**********************************************/
 
-import OBSWebSocket from 'obs-websocket-js';
+//const {default: OBSWebSocket} = require('obs-websocket-js');
+//const OBSWebSocket = require('obs-websocket-js').default;
 
 let NXBT_CONTROLLER_INDEX = false;
 let CONTROLLER_INDEX = false;
