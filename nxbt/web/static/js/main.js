@@ -521,7 +521,7 @@ function flipOBS() {
         const {sceneItemId} = idData
         obs.call('GetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId}).then(transformData => {
             const {sceneItemTransform} = transformData
-            sceneItemTransform.scale.x *= -1
+            sceneItemTransform.scaleX *= -1
             obs.call('SetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId, sceneItemTransform: sceneItemTransform})
             console.log("Flipped")
         })
