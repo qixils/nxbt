@@ -516,18 +516,14 @@ const obs = new OBSWebSocket();
 obs.connect('ws://127.0.0.1:4455', 'UIqILW7xa2jKFm4l');
 
 function flipOBS() {
-    console.log("flipping")
-    obs.call('GetSceneItemId', {sceneName: '16:9 gaming', sourceName: 'capture card'}).then(idData => {
-        console.log("got scene id")
+    console.log("Flipping")
+    obs.call('GetSceneItemId', {sceneName: '16:9 gaming', sourceName: 'Games'}).then(idData => {
         const {sceneItemId} = idData
-        console.log(`it's ${sceneItemId}`)
         obs.call('GetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId}).then(transformData => {
-            console.log("got scene item transform")
             const {sceneItemTransform} = transformData
-            console.log(`it's ${sceneItemTransform}`)
             sceneItemTransform.scale.x *= -1
             obs.call('SetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId, sceneItemTransform: sceneItemTransform})
-            console.log("flipped")
+            console.log("Flipped")
         })
     })
 }
