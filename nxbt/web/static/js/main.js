@@ -516,13 +516,18 @@ const obs = new OBSWebSocket();
 obs.connect('ws://127.0.0.1:4455', 'UIqILW7xa2jKFm4l');
 
 function flipOBS() {
+    console.log("flipping")
     obs.call('GetSceneItemId', {sceneName: '16:9 gaming', sourceName: 'capture card'}).then(idData => {
+        console.log("got scene id")
         const {sceneItemId} = idData
+        console.log(`it's ${sceneItemId}`)
         obs.call('GetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId}).then(transformData => {
+            console.log("got scene item transform")
             const {sceneItemTransform} = transformData
-            console.log(sceneItemTransform)
+            console.log(`it's ${sceneItemTransform}`)
             sceneItemTransform.scale.x *= -1
             obs.call('SetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId, sceneItemTransform: sceneItemTransform})
+            console.log("flipped")
         })
     })
 }
@@ -574,12 +579,12 @@ function updateGamepadInput() {
     INPUT_PACKET["X"] = gp["buttons"][3]["pressed"];
 
     for (let button in buttons) {
+        console.log(`checking with ${button}`)
         if (INPUT_PACKET[button] && INPUT_PACKET[button] !== INPUT_PACKET_OLD[button] && document.getElementById(`${button}-input-trigger`).checked) {
+            console.log("gonna invert stuff")
             for (let stick in sticks) {
-                if (document.getElementById(`${stick}-input`).value === -1) {
-                    if (!invertedStick.delete(stick)) {
-                        invertedStick.add(stick);
-                    }
+                if (document.getElementById(`${stick}-input`).value == -1) {
+                    invertStick(stick);
                 }
             }
             flipOBS();
