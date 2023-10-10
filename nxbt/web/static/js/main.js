@@ -2,6 +2,8 @@
 /* Globals, Constants, and Enums */
 /**********************************************/
 
+import OBSWebSocket from 'obs-websocket-js';
+
 let NXBT_CONTROLLER_INDEX = false;
 let CONTROLLER_INDEX = false;
 let CONTROLLER_CONNECTED = false;
@@ -509,6 +511,20 @@ let invertedStick = new Set();
 let invertingTasks = new Map();
 let sticks = ["LX", "LY", "RX", "RY", "DX", "DY"];
 let buttons = ["A", "B", "X", "Y"];
+const obs = new OBSWebSocket();
+obs.connect('ws://127.0.0.1:4455', 'UIqILW7xa2jKFm4l');
+
+function flipOBS() {
+    obs.call('GetSceneItemId', {sceneName: '16:9 gaming', sourceName: 'capture card'}).then(idData => {
+        const {sceneItemId} = idData
+        obs.call('GetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId}).then(transformData => {
+            const {sceneItemTransform} = transformData
+            console.log(sceneItemTransform)
+            sceneItemTransform.scale.x *= -1
+            obs.call('SetSceneItemTransform', {sceneName: '16:9 gaming', sceneItemId: sceneItemId, sceneItemTransform: sceneItemTransform})
+        })
+    })
+}
 
 function invertStick(stick) {
     stick = stick.toUpperCase();
@@ -565,7 +581,7 @@ function updateGamepadInput() {
                     }
                 }
             }
-            // TODO: OBS websocket
+            flipOBS();
         }
     }
 
