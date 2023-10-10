@@ -578,11 +578,10 @@ function updateGamepadInput() {
     INPUT_PACKET["Y"] = gp["buttons"][2]["pressed"];
     INPUT_PACKET["X"] = gp["buttons"][3]["pressed"];
 
-    for (let button in buttons) {
-        console.log(`checking with ${button}`)
+    for (let button of buttons) {
         if (INPUT_PACKET[button] && INPUT_PACKET[button] !== INPUT_PACKET_OLD[button] && document.getElementById(`${button}-input-trigger`).checked) {
-            console.log("gonna invert stuff")
-            for (let stick in sticks) {
+            console.log("Gonna invert stuff")
+            for (let stick of sticks) {
                 if (document.getElementById(`${stick}-input`).value == -1) {
                     invertStick(stick);
                 }
